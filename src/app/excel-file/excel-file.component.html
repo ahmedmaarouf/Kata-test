@@ -1,0 +1,75 @@
+<nav class="nav navbar navbar-light bg-primary">
+    <div class="container-fluid">
+        <h1> KATA</h1>
+    </div>
+</nav>
+<div class="fileUpload btn btn-primary">
+    <span>Upload an excel file</span>
+    <input id="uploadBtn" type="file" class="upload" (change)="onFileChange($event)" />
+</div>
+<div *ngIf="imported" class="btn pull-right">
+    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Add a company</button>
+</div>
+<table class="table table-striped border-mt1">
+    <thead *ngIf="imported">
+        <tr>
+            <th scope="col">Company Name</th>
+            <th scope="col">Number of Employees</th>
+            <th scope="col">Revenues ($millions)</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of sortedCompanyList; let i = index">
+            <td>{{row?.companyName}}</td>
+            <td>{{row?.nbOfEmployee}}</td>
+            <td>{{row?.revenues}}</td>
+            <td>
+                <input type="button" value="delete a company" class="btn btn-danger" (click)="deleteCompany(i)" />
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modal d'ajout  -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Company's informations</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="companyForm">
+
+                    <!-- company name -->
+                    <div class="form-group">
+                        <label class=" form-label-required" for="companyName ">company name</label>
+                        <input type="text" required formControlName="companyName" class="form-control" id="companyName"
+                            aria-describedby="company" placeholder="Enter company name">
+                    </div>
+                    <!-- Number of Employees -->
+                    <div class="form-group">
+                        <label class=" form-label-required" for="numberEmployee">Number of Employees</label>
+                        <input type="number" formControlName="nbOfEmployee" min="0" class="form-control"
+                            id="numberEmployee" aria-describedby="employee" placeholder="Enter number of Employees">
+                    </div>
+                    <!-- Revenues -->
+                    <div class="form-group">
+                        <label class=" form-label-required" for="exampleInputEmail1">Revenues</label>
+                        <input type="number" formControlName="revenues" min="0" class="form-control"
+                            id="exampleInputEmail1" aria-describedby="revenues" placeholder="Enter Revenues">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" #closebutton class="btn btn-primary" (click)="addCompany()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
